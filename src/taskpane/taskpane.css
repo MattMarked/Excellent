@@ -108,3 +108,21 @@ code {
     margin-bottom: 15px;
     width: 100%;
 }
+
+.ms-Button--primary {
+  background-color: #fff;
+  color: rgb(0, 120, 212);
+  border: 1px solid rgb(0, 120, 212);
+  text-align: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.ms-Button--primary:hover {
+  background-color: rgb(0, 120, 212);
+  color: #fff;
+}
+
+.ms-Button--default {
+  background-color: #fff;
+}
