@@ -14,12 +14,16 @@ Office.onReady((info) => {
     // Only set this if the element exists
     const insertFormulaButton = document.getElementById("insert-formula");
     if (insertFormulaButton) insertFormulaButton.onclick = insertFormula;
+
+    const explainButton = document.getElementById("explain-formula");
+    if (explainButton) explainButton.onclick = explainFormula;
   }
 });
 
-export function generateFormula() {
+export async function generateFormula() {
   try {
     // Get the user's query
+    const API_URL = process.env.API_URL || 'http://localhost:3000';
     const queryInput = document.getElementById("query-input") as HTMLTextAreaElement;
     if (!queryInput) {
       console.error("Query input element not found");
@@ -33,19 +37,28 @@ export function generateFormula() {
       return;
     }
 
-    // For now, just return mock formulas based on keywords in the query
-    let generatedFormula = "";
-    
-    if (query.toLowerCase().includes("sum") && query.toLowerCase().includes("region")) {
-      generatedFormula = '=SUMIFS(C2:C100, A2:A100, "North")';
-    } else if (query.toLowerCase().includes("average") || query.toLowerCase().includes("avg")) {
-      generatedFormula = '=AVERAGE(B2:B100)';
-    } else if (query.toLowerCase().includes("count")) {
-      generatedFormula = '=COUNTIF(A2:A100, "Value")';
-    } else {
-      generatedFormula = '=SUM(A1:A10)';
+    // Show loading state
+    const runButton = document.getElementById("run");
+    if (runButton) {
+      runButton.innerHTML = '<span class="ms-Button-label">Generating...</span>';
+      runButton.setAttribute("disabled", "true");
     }
-
+    
+    // Call the backend API
+    const response = await fetch(`${API_URL}/api/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
     // Display the result
     const formulaOutput = document.getElementById("formula-output");
     if (!formulaOutput) {
@@ -53,7 +66,7 @@ export function generateFormula() {
       return;
     }
     
-    formulaOutput.textContent = generatedFormula;
+    formulaOutput.textContent = data.formula;
     
     // Show the result section
     const resultSection = document.getElementById("result-section");
@@ -61,11 +74,17 @@ export function generateFormula() {
       console.error("Result section element not found");
       return;
     }
-    
     resultSection.style.display = "block";
   } catch (error) {
     console.error("Error:", error);
     alert("Error generating formula: " + error);
+  } finally {
+    // Reset button state
+    const runButton = document.getElementById("run");
+    if (runButton) {
+      runButton.innerHTML = '<span class="ms-Button-label">Generate Formula</span>';
+      runButton.removeAttribute("disabled");
+    }
   }
 }
 
@@ -93,3 +112,56 @@ export async function insertFormula() {
     alert("Error inserting formula: " + error);
   }
 }
+
+export async function explainFormula() {
+  try {
+    const formulaOutput = document.getElementById("formula-output");
+    if (!formulaOutput || !formulaOutput.textContent) {
+      alert("No formula to explain");
+      return;
+    }
+    
+    const formula = formulaOutput.textContent;
+    
+    // Show loading state
+    const explainButton = document.getElementById("explain-formula");
+    if (explainButton) {
+      explainButton.innerHTML = '<span class="ms-Button-label">Explaining...</span>';
+      explainButton.setAttribute("disabled", "true");
+    }
+    
+    // Call the explanation API
+    const API_URL = process.env.API_URL || 'http://localhost:3000';
+    const response = await fetch(`${API_URL}/api/explain`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ formula }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Show explanation
+    const explanationSection = document.getElementById("explanation-section");
+    const formulaExplanation = document.getElementById("formula-explanation");
+    
+    if (explanationSection && formulaExplanation) {
+      explanationSection.style.display = "block";
+      formulaExplanation.innerHTML = data.explanation;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error explaining formula: " + error);
+  } finally {
+    // Reset button state
+    const explainButton = document.getElementById("explain-formula");
+    if (explainButton) {
+      explainButton.innerHTML = '<span class="ms-Button-label">Explain Formula</span>';
+      explainButton.removeAttribute("disabled");
+    }
+  }}

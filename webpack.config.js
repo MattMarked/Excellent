@@ -7,6 +7,17 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+const fs = require("fs");
+
+// Get the environment
+const env = process.env.NODE_ENV || "development";
+
+// Load env file based on environment
+const envFile = env === "production" ? ".env.production" : ".env";
+const envConfig = dotenv.parse(fs.existsSync(envFile) ? fs.readFileSync(envFile) : "");
+
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
   return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
@@ -51,6 +62,12 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      new webpack.DefinePlugin({
+      "process.env": JSON.stringify({
+        ...envConfig,
+        NODE_ENV: env,
+      }),
+    }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",

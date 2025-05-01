@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { generateFormula } = require('./formulaGenerator');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,7 +16,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Formula generation endpoint
-app.post('/api/generate', (req, res) => {
+app.post('/api/generate', async (req, res) => {
   try {
     const { query } = req.body;
     
@@ -23,8 +24,8 @@ app.post('/api/generate', (req, res) => {
       return res.status(400).json({ error: 'Query is required' });
     }
     
-    // For now, just return mock formulas based on keywords
-    const formula = generateFormula(query);
+    // Generate formula using OpenAI
+    const formula = await generateFormula(query);
     res.status(200).json({ formula });
   } catch (error) {
     console.error('Error generating formula:', error);
@@ -34,4 +35,21 @@ app.post('/api/generate', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+});
+
+app.post('/api/explain', async (req, res) => {
+  try {
+    const { formula } = req.body;
+    
+    if (!formula) {
+      return res.status(400).json({ error: 'Formula is required' });
+    }
+    
+    // Generate explanation
+    const explanation = await explainFormula(formula);
+    res.status(200).json({ explanation });
+  } catch (error) {
+    console.error('Error explaining formula:', error);
+    res.status(500).json({ error: 'Failed to explain formula' });
+  }
 });

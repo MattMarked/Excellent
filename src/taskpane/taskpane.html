@@ -39,14 +39,24 @@
         </div>
         
         <div id="result-section" style="display: none; margin-top: 20px;">
-            <h3 class="ms-font-l">Generated Formula:</h3>
-            <div class="ms-TextField">
-                <pre id="formula-output" class="ms-TextField-field"></pre>
-            </div>
-            <div role="button" id="insert-formula" class="ms-Button ms-Button--primary">
-                <span class="ms-Button-label">Insert Formula</span>
-            </div>
-        </div>
+  <h3 class="ms-font-l">Generated Formula:</h3>
+  <div class="ms-TextField">
+    <pre id="formula-output" class="ms-TextField-field"></pre>
+  </div>
+  <div role="button" id="insert-formula" class="ms-Button ms-Button--primary">
+    <span class="ms-Button-label">Insert Formula</span>
+  </div>
+  
+  <div style="margin-top: 15px;">
+    <div role="button" id="explain-formula" class="ms-Button ms-Button--default">
+      <span class="ms-Button-label">Explain Formula</span>
+    </div>
+    <div id="explanation-section" style="display: none; margin-top: 10px;">
+      <h4 class="ms-font-m">Explanation:</h4>
+      <div id="formula-explanation" class="ms-TextField-field explanation-text"></div>
+    </div>
+  </div>
+</div>
     </main>
 </body>
 

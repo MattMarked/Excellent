@@ -126,3 +126,14 @@ code {
 .ms-Button--default {
   background-color: #fff;
 }
+
+
+.explanation-text {
+  background-color: #f0f8ff;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid #e1e1e1;
+  max-height: 150px;
+  overflow-y: auto;
+}
