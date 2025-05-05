@@ -17,10 +17,15 @@ const env = process.env.NODE_ENV || "development";
 // Load env file based on environment
 const envFile = env === "production" ? ".env.production" : ".env";
 const envConfig = dotenv.parse(fs.existsSync(envFile) ? fs.readFileSync(envFile) : "");
-
+const Dotenv = require("dotenv-webpack");
+const path = require("path");
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
-  return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
+  return {
+    ca: httpsOptions.ca,
+    key: httpsOptions.key,
+    cert: httpsOptions.cert,
+  };
 }
 
 module.exports = async (env, options) => {
@@ -44,7 +49,7 @@ module.exports = async (env, options) => {
           test: /\.ts$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader"
+            loader: "babel-loader",
           },
         },
         {
@@ -62,12 +67,17 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
-      new webpack.DefinePlugin({
-      "process.env": JSON.stringify({
-        ...envConfig,
-        NODE_ENV: env,
+      new Dotenv({
+        path: ".env", // Path to .env file
+        systemvars: true, // Set to true to load all system variables
+        safe: true, // Load .env.example file as well
       }),
-    }),
+      new webpack.DefinePlugin({
+        "process.env": JSON.stringify({
+          ...envConfig,
+          NODE_ENV: env,
+        }),
+      }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
@@ -104,7 +114,10 @@ module.exports = async (env, options) => {
       },
       server: {
         type: "https",
-        options: env.WEBPACK_BUILD || options.https !== undefined ? options.https : await getHttpsOptions(),
+        options:
+          env.WEBPACK_BUILD || options.https !== undefined
+            ? options.https
+            : await getHttpsOptions(),
       },
       port: process.env.npm_package_config_dev_server_port || 3000,
     },

@@ -1,4 +1,4 @@
-const { OpenAI } = require('openai');
+const { OpenAI } = require("openai");
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -11,7 +11,7 @@ const openai = new OpenAI({
 async function generateFormula(query) {
   try {
     const prompt = `
-You are an Excel formula expert. Create the most appropriate Excel formula for the following request:
+You are an Excel formula expert. If the following request specify some columns or cells, keep them in consideration. Create the most appropriate Excel formula for the following request:
 "${query}"
 
 Provide ONLY the Excel formula with no additional text or explanation.
@@ -26,15 +26,15 @@ Provide ONLY the Excel formula with no additional text or explanation.
 
     // Extract the formula from the response
     let formula = response.choices[0].message.content.trim();
-    
+
     // Ensure it starts with '='
-    if (!formula.startsWith('=')) {
-      formula = '=' + formula;
+    if (!formula.startsWith("=")) {
+      formula = "=" + formula;
     }
-    
+
     return formula;
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error("OpenAI API error:", error);
     // Fallback to simple formula generation if API fails
     return fallbackGenerateFormula(query);
   }
@@ -58,7 +58,7 @@ Your explanation should be concise but clear, suitable for users with basic Exce
 
     return response.choices[0].message.content.trim();
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error("OpenAI API error:", error);
     // Provide a generic explanation if API fails
     return `This formula ${formula} performs a calculation in Excel. Due to a temporary issue, a detailed explanation is not available.`;
   }
@@ -69,19 +69,19 @@ Your explanation should be concise but clear, suitable for users with basic Exce
  */
 function fallbackGenerateFormula(query) {
   query = query.toLowerCase();
-  
-  if (query.includes('sum') && query.includes('region')) {
+
+  if (query.includes("sum") && query.includes("region")) {
     return '=SUMIFS(C2:C100, A2:A100, "North")';
-  } else if (query.includes('average') || query.includes('avg')) {
-    return '=AVERAGE(B2:B100)';
-  } else if (query.includes('count')) {
+  } else if (query.includes("average") || query.includes("avg")) {
+    return "=AVERAGE(B2:B100)";
+  } else if (query.includes("count")) {
     return '=COUNTIF(A2:A100, "Value")';
   } else {
-    return '=SUM(A1:A10)';
+    return "=SUM(A1:A10)";
   }
 }
 
 module.exports = {
   generateFormula,
-  explainFormula
+  explainFormula,
 };
