@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { generateFormula } = require("./formulaGenerator");
+const { generateFormula, explainFormula } = require("./formulaGenerator");
 require("dotenv").config();
 
 const app = express();

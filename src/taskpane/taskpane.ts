@@ -90,7 +90,9 @@ function showResult(textResult: string) {
     showError("Result section element not found");
     return;
   }
+  hideErrors();
   resultSection.style.display = "block";
+
 }
 
 function showError(errorText: string) {
@@ -98,6 +100,17 @@ function showError(errorText: string) {
   errorOutput.textContent = `${errorText}`;
   const errorSection = document.getElementById("error-section");
   errorSection.style.display = "block";
+  hideResult();
+}
+
+function hideResult() {
+  const resultSection = document.getElementById("result-section");
+  resultSection.style.display = "none";
+}
+
+function hideErrors() {
+  const errorSection = document.getElementById("error-section");
+  errorSection.style.display = "none";
 }
 
 export async function insertFormula() {

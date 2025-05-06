@@ -11,7 +11,7 @@ const openai = new OpenAI({
 async function generateFormula(query) {
   try {
     const prompt = `
-You are an Excel formula expert. If the following request specify some columns or cells, keep them in consideration. Create the most appropriate Excel formula for the following request:
+You are an Excel formula expert. If the following request specify some columns or cells, keep them in consideration. If one or more columns are specified without any cell clearly noted, use either the cells with values, or the first 20 cells. Create the most appropriate Excel formula for the following request:
 "${query}"
 
 Provide ONLY the Excel formula with no additional text or explanation.
@@ -59,6 +59,7 @@ Your explanation should be concise but clear, suitable for users with basic Exce
     return response.choices[0].message.content.trim();
   } catch (error) {
     console.error("OpenAI API error:", error);
+    console.error("Current used api key:", apiKey);
     // Provide a generic explanation if API fails
     return `This formula ${formula} performs a calculation in Excel. Due to a temporary issue, a detailed explanation is not available.`;
   }
