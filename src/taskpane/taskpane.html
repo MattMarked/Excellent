@@ -69,19 +69,26 @@
         <div role="button" id="insert-formula" class="ms-Button ms-Button--primary">
           <span class="ms-Button-label">Insert Formula</span>
         </div>
-
-        <div style="margin-top: 15px">
-          <div role="button" id="explain-formula" class="ms-Button ms-Button--primary">
-            <span class="ms-Button-label">Explain Formula generated</span>
-          </div>
-          <div id="explanation-section" style="display: none; margin-top: 10px">
-            <h4 class="ms-font-m">Explanation:</h4>
-            <div id="formula-explanation" class="ms-TextField-field explanation-text"></div>
-          </div>
+        <div role="button" id="explain-formula" class="ms-Button ms-Button--primary">
+          <span class="ms-Button-label">Explain Formula generated</span>
+        </div>
+        <div id="explanation-section" style="display: none; margin-top: 10px">
+          <h4 class="ms-font-m">Explanation:</h4>
+          <div id="formula-explanation" class="ms-TextField-field explanation-text"></div>
+        </div>
+      </div>
+      <div id="error-section" style="margin-top: 15px; display: none">
+        <div class="ms-TextField-field">
+          <p id="error-output" class="ms-TextField-field"></p>
         </div>
       </div>
       <div id="history-section" style="margin-top: 20px; width: 100%">
-        <h3 class="ms-font-l">Recent Formulas</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 class="ms-font-l" style="margin: 0;">Recent Formulas</h3>
+          <div role="button" id="clear-history" class="ms-Button ms-Button--icon" title="Clear history">
+            <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--Delete"></i></span>
+          </div>
+        </div>
         <div id="formula-history" class="history-container">
           <div class="ms-MessageBar ms-MessageBar--info">
             <div class="ms-MessageBar-content">
@@ -90,11 +97,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div id="error-section" style="margin-top: 15px; display: none">
-        <div class="ms-TextField-field">
-          <p id="error-output" class="ms-TextField-field"></p>
         </div>
       </div>
     </main>

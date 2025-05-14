@@ -39,6 +39,7 @@ ul {
   -webkit-flex: 1 0 0;
   flex: 1 0 0;
   padding: 10px 20px;
+  max-width: 400px;
 }
 
 .ms-welcome__main > h2 {
@@ -94,10 +95,10 @@ code {
   white-space: pre-wrap;
 }
 
-#generate-formula,
-#insert-formula {
-  margin-bottom: 15px;
-  width: 100%;
+
+.ms-Button {
+  width: 90%;
+  margin-bottom: 10px;
 }
 
 .ms-Button--primary {
@@ -127,6 +128,10 @@ code {
   max-height: 150px;
   overflow-y: auto;
   cursor: pointer;
+}
+
+#result-section {
+  width: 100%;
 }
 
 #error-section {
@@ -163,7 +168,7 @@ code {
 }
 
 .history-formula {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   background-color: #f5f5f5;
   padding: 3px;
   border-radius: 3px;

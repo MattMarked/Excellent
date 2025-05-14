@@ -7,12 +7,27 @@ const openai = new OpenAI({
 
 /**
  * Generate a formula based on the user's query using OpenAI.
+ * @param {string} query - The user's query
+ * @param {string[]} sheetDetails - Array of sheet details
+ * @param {string} currentSheet - The name of the current sheet
+ * @returns {string} The generated Excel formula
  */
-async function generateFormula(query) {
+async function generateFormula(query, sheetDetails = [], currentSheet = "") {
   try {
+    // Create a context string from sheet details
+    const sheetsContext = sheetDetails.length > 0 
+      ? `\nAvailable sheets and their data:\n${sheetDetails.join('\n')}`
+      : "";
+    
+    // Add current sheet context if available
+    const currentSheetContext = currentSheet 
+      ? `\nThe user is currently working in the "${currentSheet}" sheet.` 
+      : "";
+
     const prompt = `
 You are an Excel formula expert. If the following request specify some columns or cells, keep them in consideration. If one or more columns are specified without any cell clearly noted, use either the cells with values, or the first 20 cells. Create the most appropriate Excel formula for the following request:
 "${query}"
+${sheetsContext}${currentSheetContext}
 
 Provide ONLY the Excel formula with no additional text or explanation.
 `;
@@ -21,7 +36,7 @@ Provide ONLY the Excel formula with no additional text or explanation.
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.2, // Lower temperature for more deterministic outputs
-      max_tokens: 150,
+      max_completion_tokens: 150,
     });
 
     // Extract the formula from the response
@@ -36,7 +51,7 @@ Provide ONLY the Excel formula with no additional text or explanation.
   } catch (error) {
     console.error("OpenAI API error:", error);
     // Fallback to simple formula generation if API fails
-    return fallbackGenerateFormula(query);
+    return fallbackGenerateFormula(query, sheetDetails, currentSheet);
   }
 }
 
@@ -59,7 +74,6 @@ Your explanation should be concise but clear, suitable for users with basic Exce
     return response.choices[0].message.content.trim();
   } catch (error) {
     console.error("OpenAI API error:", error);
-    console.error("Current used api key:", apiKey);
     // Provide a generic explanation if API fails
     return `This formula ${formula} performs a calculation in Excel. Due to a temporary issue, a detailed explanation is not available.`;
   }
@@ -67,8 +81,12 @@ Your explanation should be concise but clear, suitable for users with basic Exce
 
 /**
  * Fallback formula generator if the API call fails.
+ * @param {string} query - The user's query
+ * @param {string[]} sheetDetails - Array of sheet details (unused in fallback)
+ * @param {string} currentSheet - The name of the current sheet (unused in fallback)
+ * @returns {string} A basic Excel formula based on the query
  */
-function fallbackGenerateFormula(query) {
+function fallbackGenerateFormula(query, sheetDetails = [], currentSheet = "") {
   query = query.toLowerCase();
 
   if (query.includes("sum") && query.includes("region")) {
