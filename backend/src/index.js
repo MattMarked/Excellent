@@ -32,7 +32,17 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+// Update your CORS configuration
+const corsOptions = {
+  origin: [
+    'https://excellent-nine.vercel.app/', 
+    'https://MattMarked.github.io'
+  ],
+  methods: ['GET', 'POST'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(validateApiKey);
 
