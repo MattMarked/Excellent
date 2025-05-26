@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
-  <Id>c2030070-b830-443f-a6c9-f63c0af5287d</Id>
+  <Id>excellent-nine.vercel.app</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Contoso</ProviderName>
+  <ProviderName>Methis</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Excellent"/>
   <Description DefaultValue="Generate Excel formulas from natural language using AI"/>
   <IconUrl DefaultValue="https://excellent-nine.vercel.app/assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://excellent-nine.vercel.app/assets/icon-64.png"/>
-  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+  <SupportUrl DefaultValue="https://www.promex.ai/help"/>
   <AppDomains>
-    <AppDomain>https://www.contoso.com</AppDomain>
+    <AppDomain>https://www.methis.ai</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook"/>
