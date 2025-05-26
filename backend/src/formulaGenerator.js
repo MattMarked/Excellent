@@ -21,16 +21,18 @@ async function generateFormula(query, sheetDetails = [], currentSheet = "") {
     
     // Add current sheet context if available
     const currentSheetContext = currentSheet 
-      ? `\nThe user is currently working in the "${currentSheet}" sheet.` 
+      ? `\nThis is the current sheet the user is working on "${currentSheet}".` 
       : "";
 
     const prompt = `
-You are an Excel formula expert. If the following request specify some columns or cells, keep them in consideration. If one or more columns are specified without any cell clearly noted, use either the cells with values, or the first 20 cells. Create the most appropriate Excel formula for the following request:
+You are an Excel formula expert. If the request by the user specify some columns or cells, keep them in consideration. The user might want to use more sheets, keep that into consideration. The user might specify a range of sheet telling you something like "between","each","from/to" regarding to sheets: if so, don't select only the called sheets but also all the sheets in between, using the list i will past below. If the user specifies sheets by their tab color, use the sheets data provided below (i provide the sheet color in hex format, you will have to convert the color specified by the user in textual format to a range of hex colors eventually).  Create the most appropriate Excel formula for the following request:
 "${query}"
 ${sheetsContext}${currentSheetContext}
 
 Provide ONLY the Excel formula with no additional text or explanation.
 `;
+
+    console.log("Prompt:", prompt);
 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
