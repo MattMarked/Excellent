@@ -70,13 +70,7 @@ module.exports = async (env, options) => {
       new Dotenv({
         path: ".env", // Path to .env file
         systemvars: true, // Set to true to load all system variables
-        safe: true, // Load .env.example file as well
-      }),
-      new webpack.DefinePlugin({
-        "process.env": JSON.stringify({
-          ...envConfig,
-          NODE_ENV: env,
-        }),
+        safe: false, // Don't require .env.example file
       }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
