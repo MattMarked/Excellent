@@ -32,7 +32,7 @@
       "dest": "/api/explain.js"
     },
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "/src/index.js"
     }
   ]
