@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { generateFormula, explainFormula } = require("./formulaGenerator");
 const { dbOperations } = require("./database");
-const { generateApiKey, validateInstanceId } = require("./authUtils");
+const { generateApiKey, validateInstanceId } = require("./auth");
 require("dotenv").config();
 
 // Enhanced middleware to validate API key and track usage
@@ -60,7 +60,8 @@ const port = process.env.PORT || 3000;
 // Middleware
 const corsOptions = {
   origin: [
-    'https://excellent-nine.vercel.app/', 
+    'https://excellent-nine.vercel.app', 
+    'https://excellent-nine.vercel.app/',
     'https://MattMarked.github.io'
   ],
   methods: ['GET', 'POST'],

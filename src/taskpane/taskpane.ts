@@ -123,10 +123,10 @@ async function getApiKey(): Promise<ApiKeyInfo> {
     const officeInstanceId = await generateOfficeInstanceId();
     
     // Get API base URL from your existing configuration
-    const API_BASE_URL = process.env.API_URL || 'https://excellent-nine.vercel.app';
+    const API_BASE_URL = process.env.API_URL || 'https://excellent-nine.vercel.app/api';
     
     // Request API key from backend
-    const response = await fetch(`${API_BASE_URL}/api/generate-key`, {
+    const response = await fetch(`${API_BASE_URL}/generate-key`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ async function authenticatedFetch(endpoint: string, options: RequestInit = {}): 
     const apiKeyInfo = await getApiKey();
     
     // Get API base URL
-    const API_BASE_URL = process.env.API_URL || 'https://excellent-nine.vercel.app';
+    const API_BASE_URL = process.env.API_URL || 'https://excellent-nine.vercel.app/api';
     
     // Add API key to headers
     const headers = {
@@ -193,7 +193,7 @@ async function authenticatedFetch(endpoint: string, options: RequestInit = {}): 
  */
 async function getUsageInfo(): Promise<UsageInfo> {
   try {
-    const response = await authenticatedFetch('/api/usage');
+    const response = await authenticatedFetch('/usage');
     
     if (!response.ok) {
       throw new Error(`Failed to get usage info: ${response.status}`);
@@ -293,7 +293,7 @@ export async function generateFormula() {
     const currentSheet = JSON.stringify(await getActiveSheetContent());
 
     // Make authenticated request
-    const response = await authenticatedFetch('/api/generate', {
+    const response = await authenticatedFetch('/generate', {
       method: 'POST',
       body: JSON.stringify({
         query,
@@ -356,7 +356,7 @@ export async function explainFormula() {
     setButtonLoading("explain-formula", "Explaining...", true);
 
     // Make authenticated request
-    const response = await authenticatedFetch('/api/explain', {
+    const response = await authenticatedFetch('/explain', {
       method: 'POST',
       body: JSON.stringify({ formula })
     });
