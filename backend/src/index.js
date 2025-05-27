@@ -10,7 +10,7 @@ const validateApiKey = async (req, res, next) => {
   const apiKey = req.headers["x-api-key"];
 
   // Skip validation for health check and key generation
-  if (req.path === "/health" || req.path === "/generate-key") {
+  if (req.path === "/api/health" || req.path === "/api/generate-key") {
     return next();
   }
 
@@ -73,12 +73,12 @@ app.use(express.json());
 app.use(validateApiKey);
 
 // Health check endpoint
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
 // API key generation endpoint
-app.post("/generate-key", async (req, res) => {
+app.post("/api/generate-key", async (req, res) => {
   try {
     const { officeInstanceId } = req.body;
 
@@ -128,7 +128,7 @@ app.post("/generate-key", async (req, res) => {
 });
 
 // Get usage information
-app.get("/usage", async (req, res) => {
+app.get("/api/usage", async (req, res) => {
   try {
     const apiKey = req.headers["x-api-key"];
     const currentUsage = await dbOperations.getCurrentMonthUsage(apiKey);
@@ -147,7 +147,7 @@ app.get("/usage", async (req, res) => {
 });
 
 // Formula generation endpoint
-app.post("/generate", async (req, res) => {
+app.post("/api/generate", async (req, res) => {
   try {
     const { query, sheetDetails, currentSheet } = req.body;
 
@@ -177,7 +177,7 @@ app.post("/generate", async (req, res) => {
 });
 
 // Formula explanation endpoint
-app.post("/explain", async (req, res) => {
+app.post("/api/explain", async (req, res) => {
   try {
     const { formula } = req.body;
 

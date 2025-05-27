@@ -4,12 +4,36 @@
     {
       "src": "src/index.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
+      "src": "/api/health",
+      "dest": "/api/health.js"
+    },
+    {
+      "src": "/api/generate-key",
+      "dest": "/api/generate-key.js"
+    },
+    {
+      "src": "/api/usage",
+      "dest": "/api/usage.js"
+    },
+    {
+      "src": "/api/generate",
+      "dest": "/api/generate.js"
+    },
+    {
+      "src": "/api/explain",
+      "dest": "/api/explain.js"
+    },
+    {
       "src": "/api/(.*)",
-      "dest": "src/index.js"
+      "dest": "/src/index.js"
     }
   ]
 }
